@@ -35,6 +35,8 @@ class PlotterWidget(QWidget):
     def plotter_add_mesh(self,mesh_object,plotter_clear = True):
         if plotter_clear == True:
             self.clear_plotter()
+            
+
             if mesh_object.cmap is  None:
                 return self.plotter.add_mesh(mesh_object.polydata,point_size = 1 ,scalars = "color_by",rgb = mesh_object.rgb_status)
             else:

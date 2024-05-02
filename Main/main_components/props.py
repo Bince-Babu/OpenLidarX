@@ -56,8 +56,6 @@ class Properties(QListWidget):
             radio_button_rgb.setChecked(True)
         if not mesh_object.rgb_status:
             radio_button_elevation.setChecked(True)
-
-
         radio_button_elevation.clicked.connect(self.elevation_triggered)
         radio_button_rgb.clicked.connect(self.rgb_triggered)
         radio_button_custom.clicked.connect(self.show_text_input_dialog)

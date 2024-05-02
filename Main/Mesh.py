@@ -8,6 +8,7 @@ import pyvista as pv
 class Mesh(QObject):
     def __init__(self):
         super().__init__()
+       
         self.point_data = None
         self.color_data = None
         self.folder_name = None
@@ -20,8 +21,10 @@ class Mesh(QObject):
         self.point_data = point_data
         if update:
             self.polydata.points = point_data
+            self.polydata["orig_id"] = np.arange(self.polydata.n_points)
         else:
             self.polydata = pv.PolyData(self.point_data)
+            self.polydata["orig_id"] = np.arange(self.polydata.n_points)
         # if not update:
         #     self.polydata = pv.PolyData(self.point_data)
         # else:
@@ -30,6 +33,7 @@ class Mesh(QObject):
     def add_color_data(self, color_data):
         self.color_data = color_data
         self.polydata["color_by"] = self.color_data
+        
     def set_color_data(self):
         self.polydata["color_by"] = self.color_data
         self.rgb_status = True

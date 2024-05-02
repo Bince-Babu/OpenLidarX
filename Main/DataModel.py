@@ -9,6 +9,7 @@ import gc
 class DataModel:
     def __init__(self):
         print("Object of the data model created")
+    
     def file_process(self,file_name):
         self.return_value = None
         self.file_name = file_name
@@ -51,6 +52,7 @@ class DataModel:
         
         except:
             print("Color information is not included in the las file")
+            mesh_object.rgb_status = False
             color_values = points[:,2]
             color_values = color_values/np.max(color_values)
             mesh_object.rgb_status = False

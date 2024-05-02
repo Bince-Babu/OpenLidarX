@@ -1,3 +1,6 @@
+from main_components.InstanceSegmentation import InstanceSegmentation
+from main_components.Clipping import Clipping
+from main_components.AngleCalc import AngleCalc
 from PyQt5.QtWidgets import QFileDialog
 import numpy as np
 from main_components.Signals import Signals
@@ -33,6 +36,11 @@ class DataFlowController:
         self.view.signals.downsample_enable.connect(self.downsample_enable)
         self.view.signals.downsample_disable.connect(self.downsample_disable)
         self.view.signals.ground_filtering_signal.connect(self.ground_filtering)
+        self.view.signals.angle_calc_enable.connect(self.angle_calc_enable)
+        self.view.signals.angle_calc_disable.connect(self.angle_calc_disable)
+        self.view.signals.clipping_enable.connect(self.clipping_enable)
+        self.view.signals.clipping_disable.connect(self.clipping_disable)
+        self.view.signals.instance_segmentation_signal.connect(self.instance_segmentation)
         self.registration_object = None
         self.view_object = View_updater(self.view.plotter_widget.plotter)
         self.selected_mesh = None
@@ -78,7 +86,7 @@ class DataFlowController:
     def handle_file_dialog(self):
         
 
-
+        
         return  files_handler.file_handle_window()
     def show_mesh(self,mesh_object):
         print("Show mesh triggered")
@@ -92,6 +100,7 @@ class DataFlowController:
         self.view.nav_bar.point_pick.setEnabled(True)
         self.view.nav_bar.distance.setEnabled(True)
         self.view.nav_bar.downsample.setEnabled(True)
+        self.view.nav_bar.angle.setEnabled(True)
         self.view.left_widget.tree_widget.update_tree_widget(mesh_object)
         self.view.signals.add_mesh_signal.emit(mesh_object)       
     def remove_mesh(self,mesh_object):
@@ -122,9 +131,31 @@ class DataFlowController:
             self.point_distance.disable()
         except:
             print("Distance Measurement is not enabled")
+    
+    def angle_calc_enable(self):
+        print("Angle Enabled")
+        self.anglecalc = AngleCalc(self.view.plotter_widget.plotter)
+        self.view.plotter_widget.plotter.enable_point_picking(callback = self.anglecalc.point_picking,show_point=False)
 
+    def angle_calc_disable(self):
+        try:
+            self.anglecalc.disable()
+        except:
+            print("Angle calculation is not enabled")
+    def clipping_enable(self):
+        print("Clipping Enabled")
+        self.clip = Clipping(self, self.view.plotter_widget.plotter,self.selected_mesh)
+        self.view.plotter_widget.plotter.enable_cell_picking(callback= self.clip.rectangle_picking_callback, show_message=True, font_size=18, start=True,style='points')
 
-
+    def clipping_disable(self):
+        try:
+            self.clip.disable()
+        except:
+            print("Point Picking is not enabled")
+    def instance_segmentation(self):
+        self.instancesegmentation=InstanceSegmentation(self,self.view.plotter_widget.plotter,self.selected_mesh)
+        self.instancesegmentation.segment()
+       
         
 
 
@@ -155,4 +186,3 @@ class DataFlowController:
 
 
 
-#file_paths = ["C:/Users/babub/open3d_data/extract/DemoICPPointClouds/cloud_bin_0.pcd","C:/Users/babub/open3d_data/extract/DemoICPPointClouds/cloud_bin_1.pcd","C:/Users/babub/open3d_data/extract/DemoICPPointClouds/cloud_bin_2.pcd"]

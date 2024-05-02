@@ -15,6 +15,11 @@ class Signals(QObject):
     dbtree_select_signal = pyqtSignal(QObject)
     downsample_enable = pyqtSignal()
     downsample_disable = pyqtSignal()
+    angle_calc_enable = pyqtSignal()
+    angle_calc_disable = pyqtSignal()
+    clipping_enable=pyqtSignal()
+    clipping_disable=pyqtSignal()
+    instance_segmentation_signal=pyqtSignal()
     ground_filtering_signal = pyqtSignal()
 
     def __init__(self):
