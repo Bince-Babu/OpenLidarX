@@ -14,17 +14,19 @@ class InstanceSegmentation:
         actual_file_path = os.path.join(self.copymesh.folder_name, self.copymesh.file_name)
         model = samlidar.SamLidar(ckpt_path="sam_vit_h_4b8939.pth")
         points = model.read(actual_file_path)
-        
-        cloud, non_ground, ground = model.csf(points)
-        labels, *_ = model.segment(points=cloud, image_path="raster.tif", labels_path="labeled.tif")
-        model.write(points=points, non_ground=non_ground, ground=ground, segment_ids=labels, save_path="segmented.las")
+        labels, *_ = model.segment(points=points, image_path="raster.tif", labels_path="labeled.tif")
+        model.write(points=points, segment_ids=labels, save_path="segmented.las")
+
+        # cloud, non_ground, ground = model.csf(points)
+        # labels, *_ = model.segment(points=cloud, image_path="raster.tif", labels_path="labeled.tif")
+        # model.write(points=points, non_ground=non_ground, ground=ground, segment_ids=labels, save_path="segmented.las")
         print("Segmentation completed")
         model_creator = DataModel()
         
         mesh_objects = model_creator.file_process("segmented.las")
-        self
         mesh_objects.file_name = "Segmented " + self.copymesh.file_name
         self.controller.add_db_tree_and_plotter(mesh_objects)
+        
 
 
 

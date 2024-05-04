@@ -1,5 +1,6 @@
 import pyvista as pv
 import numpy as np
+import vtk as _vtk
 class Clipping:
     def __init__(self, controller, plotter,mesh_object):
         self.controller = controller
@@ -21,6 +22,9 @@ class Clipping:
 
         self.clipped_mesh.file_name = "Clipped " + self.clipped_mesh.file_name
         self.controller.add_db_tree_and_plotter(self.clipped_mesh)
+
+
+        
  
 #     # def disable(self):
 #     #     for actor in self.text_actors:

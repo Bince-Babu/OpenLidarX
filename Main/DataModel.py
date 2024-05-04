@@ -41,9 +41,7 @@ class DataModel:
         random_numbers = np.random.randint(0, points.shape[0], size=6000000)
         points = points[random_numbers]
         mesh_object.add_point_data(points)
-        # for name in las_file.point_format.dimension_names:
-        #     print(name)
-        # if "red" in las_file.point_format.dimension_names and "green" in las_file.point_format.dimension_names and "blue" in las_file.point_format.dimension_names:
+
         try:
             color_values = np.vstack((las_file.red,las_file.green,las_file.blue)).transpose()
             color_values = color_values[random_numbers]
@@ -59,26 +57,17 @@ class DataModel:
             print("Color values",color_values)
         finally:
             mesh_object.add_color_data(color_values)
-        worker = Worker(points)
-        worker.start()
-        worker.wait()
-        # mesh_object.add_point_data(points)
-        # mesh_object.add_color_data(points[:,2])
-        #mesh_object.add_color_data( np.random.rand(276357, 3))
-        #del las_file
-        #gc.collect()
+        try:
+            segment_ids=las_file.segment_id[random_numbers]
+            mesh_object.add_color_data(segment_ids)
+            mesh_object.rgb_status=False
+
+        except:
+            print("Segment id does not exist")
         return mesh_object
 
 
-class Worker(QThread):
-    def __init__(self,points):
-        super().__init__()
-        self.points  = points
-    def run(self):
-        k = 0
-        for i in self.points:
-            k = k+1 
-        print("kkkkk",k)
+
 
 
 

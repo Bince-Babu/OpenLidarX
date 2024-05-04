@@ -15,7 +15,8 @@ class Mesh(QObject):
         self.file_name = None
         self.polydata = None
         self.actor = None
-        self.rgb_status = None
+        self.segment_id=None
+        self.rgb_status = False
         self.cmap = None
     def add_point_data(self, point_data, update=False):
         self.point_data = point_data
@@ -32,8 +33,7 @@ class Mesh(QObject):
 
     def add_color_data(self, color_data):
         self.color_data = color_data
-        self.polydata["color_by"] = self.color_data
-        
+        self.polydata["color_by"] = self.color_data     
     def set_color_data(self):
         self.polydata["color_by"] = self.color_data
         self.rgb_status = True

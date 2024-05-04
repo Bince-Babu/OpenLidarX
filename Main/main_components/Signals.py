@@ -17,8 +17,8 @@ class Signals(QObject):
     downsample_disable = pyqtSignal()
     angle_calc_enable = pyqtSignal()
     angle_calc_disable = pyqtSignal()
-    clipping_enable=pyqtSignal()
-    clipping_disable=pyqtSignal()
+    clipping_signal=pyqtSignal()
+
     instance_segmentation_signal=pyqtSignal()
     ground_filtering_signal = pyqtSignal()
 

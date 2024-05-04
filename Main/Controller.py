@@ -38,8 +38,7 @@ class DataFlowController:
         self.view.signals.ground_filtering_signal.connect(self.ground_filtering)
         self.view.signals.angle_calc_enable.connect(self.angle_calc_enable)
         self.view.signals.angle_calc_disable.connect(self.angle_calc_disable)
-        self.view.signals.clipping_enable.connect(self.clipping_enable)
-        self.view.signals.clipping_disable.connect(self.clipping_disable)
+        self.view.signals.clipping_signal.connect(self.clipping_enable)
         self.view.signals.instance_segmentation_signal.connect(self.instance_segmentation)
         self.registration_object = None
         self.view_object = View_updater(self.view.plotter_widget.plotter)
@@ -101,6 +100,7 @@ class DataFlowController:
         self.view.nav_bar.distance.setEnabled(True)
         self.view.nav_bar.downsample.setEnabled(True)
         self.view.nav_bar.angle.setEnabled(True)
+        
         self.view.left_widget.tree_widget.update_tree_widget(mesh_object)
         self.view.signals.add_mesh_signal.emit(mesh_object)       
     def remove_mesh(self,mesh_object):
@@ -109,11 +109,23 @@ class DataFlowController:
     
         print("Point Picking Initiaited")
         self.view.nav_bar.distance.setEnabled(False)
+        self.view.nav_bar.downsample.setEnabled(False)
+        self.view.nav_bar.angle.setEnabled(False)
+        self.view.nav_bar.clip.setEnabled(False)
+
+
+
+        
         self.point_picker = PointPicker(self.view.plotter_widget.plotter)
         self.view.plotter_widget.plotter.enable_point_picking(callback = self.point_picker.point_picking,show_point = False)
     def point_picking_disable(self):
         print("point picking disabled")
         self.view.nav_bar.distance.setEnabled(True)
+        self.view.nav_bar.distance.setEnabled(True)
+        self.view.nav_bar.downsample.setEnabled(True)
+        self.view.nav_bar.angle.setEnabled(True)
+        self.view.nav_bar.clip.setEnabled(True)
+        
         try:
             self.point_picker.disable()
         except:
@@ -146,12 +158,6 @@ class DataFlowController:
         print("Clipping Enabled")
         self.clip = Clipping(self, self.view.plotter_widget.plotter,self.selected_mesh)
         self.view.plotter_widget.plotter.enable_cell_picking(callback= self.clip.rectangle_picking_callback, show_message=True, font_size=18, start=True,style='points')
-
-    def clipping_disable(self):
-        try:
-            self.clip.disable()
-        except:
-            print("Point Picking is not enabled")
     def instance_segmentation(self):
         self.instancesegmentation=InstanceSegmentation(self,self.view.plotter_widget.plotter,self.selected_mesh)
         self.instancesegmentation.segment()

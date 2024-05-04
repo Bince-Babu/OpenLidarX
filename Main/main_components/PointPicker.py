@@ -1,5 +1,5 @@
 import pyvista as pv
-
+import vtk as _vtk
 class PointPicker:
     def __init__(self,plotter):
         self.plotter = plotter
@@ -17,6 +17,8 @@ class PointPicker:
         try:
             self.plotter.remove_actor(self.plotter.actors['point'])
             self.plotter.remove_actor(self.plotter.actors['point_label-labels'])
+            
+            self.plotter.clear_box_widgets()
         except:
             print("No actor to remove")
         finally:

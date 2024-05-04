@@ -92,3 +92,5 @@ class AngleCalc:
                 self.plotter.remove_actor(actor)
             self.plotter.remove_actor(self.line_actor)
             self.plotter.remove_actor(self.mesh_actor)
+            self.plotter.remove_actor(self.angle_display_actor)
+            self.plotter.disable_picking()
