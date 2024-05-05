@@ -3,6 +3,8 @@ from main_components.Clipping import Clipping
 from main_components.AngleCalc import AngleCalc
 from PyQt5.QtWidgets import QFileDialog
 import numpy as np
+import vtk as _vtk
+
 from main_components.Signals import Signals
 import files_handler
 import time
@@ -111,7 +113,6 @@ class DataFlowController:
         self.view.nav_bar.distance.setEnabled(False)
         self.view.nav_bar.downsample.setEnabled(False)
         self.view.nav_bar.angle.setEnabled(False)
-        self.view.nav_bar.clip.setEnabled(False)
 
 
 
@@ -124,7 +125,6 @@ class DataFlowController:
         self.view.nav_bar.distance.setEnabled(True)
         self.view.nav_bar.downsample.setEnabled(True)
         self.view.nav_bar.angle.setEnabled(True)
-        self.view.nav_bar.clip.setEnabled(True)
         
         try:
             self.point_picker.disable()
@@ -158,6 +158,7 @@ class DataFlowController:
         print("Clipping Enabled")
         self.clip = Clipping(self, self.view.plotter_widget.plotter,self.selected_mesh)
         self.view.plotter_widget.plotter.enable_cell_picking(callback= self.clip.rectangle_picking_callback, show_message=True, font_size=18, start=True,style='points')
+           
     def instance_segmentation(self):
         self.instancesegmentation=InstanceSegmentation(self,self.view.plotter_widget.plotter,self.selected_mesh)
         self.instancesegmentation.segment()
